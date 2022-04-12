@@ -9,7 +9,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final int VERSAO = 1;
     private static final String NOME_DB = "DB_APP";
-    private static final String TB_PRODUTO = "TB_PRODUTO";
+    public static final String TB_PRODUTO = "TB_PRODUTO";
 
     public DBHelper(Context context) {
         super(context, NOME_DB, null, VERSAO);
@@ -27,7 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             sqLiteDatabase.execSQL(sql);
         } catch (Exception e) {
-            Log.i("ERROR", "Erro ao criar a tabela " + TB_PRODUTO + " " + e.getMessage());
+            Log.i("ERROR", "Erro ao criar a tabela " + TB_PRODUTO + ": " + e.getMessage());
         }
     }
 

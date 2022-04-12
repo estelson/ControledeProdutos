@@ -13,10 +13,14 @@ public class FormProdutoActivity extends AppCompatActivity {
     private EditText edit_quantidade;
     private EditText edit_valor;
 
+    private ProdutoDAO produtoDAO;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_produto);
+
+        produtoDAO = new ProdutoDAO(this);
 
         edit_produto = findViewById(R.id.edit_produto);
         edit_quantidade = findViewById(R.id.edit_quantidade);
@@ -35,7 +39,9 @@ public class FormProdutoActivity extends AppCompatActivity {
                     if(!valor.isEmpty()) {
                         double vlrProduto = Double.parseDouble(valor);
                         if(vlrProduto > 0) {
-                            Toast.makeText(this, "Tudo certo", Toast.LENGTH_SHORT).show();
+                            Produto produto = new Produto(nome, qtd, vlrProduto);
+
+                            produtoDAO.salvarProduto(produto);
                         } else {
                             edit_valor.requestFocus();
                             edit_valor.setError("Informe um valor maior que 0");
