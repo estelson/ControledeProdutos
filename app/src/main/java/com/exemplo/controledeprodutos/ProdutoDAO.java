@@ -61,4 +61,21 @@ public class ProdutoDAO {
         return produtoList;
     }
 
+    public void atualizarProduto(Produto produto) {
+        ContentValues cv = new ContentValues();
+        cv.put("nome", produto.getNome());
+        cv.put("estoque", produto.getEstoque());
+        cv.put("valor", produto.getValor());
+
+        String where = "id=?";
+        String[] args = {String.valueOf(produto.getId())};
+
+        try {
+            write.update(DBHelper.TB_PRODUTO, cv, where, args);
+            // write.close();
+        } catch (Exception e) {
+            Log.i("Error", "Erro ao atualizar Produto " + e.getMessage());
+        }
+    }
+
 }

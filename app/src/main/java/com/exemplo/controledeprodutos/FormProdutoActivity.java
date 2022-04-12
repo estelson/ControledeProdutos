@@ -15,6 +15,8 @@ public class FormProdutoActivity extends AppCompatActivity {
 
     private ProdutoDAO produtoDAO;
 
+    private Produto produto;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +27,13 @@ public class FormProdutoActivity extends AppCompatActivity {
         edit_produto = findViewById(R.id.edit_produto);
         edit_quantidade = findViewById(R.id.edit_quantidade);
         edit_valor = findViewById(R.id.edit_valor);
+
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null) {
+            produto = (Produto) bundle.getSerializable("produto");
+
+            editarProduto();
+        }
     }
 
     public void salvarProduto(View view) {
@@ -39,9 +48,20 @@ public class FormProdutoActivity extends AppCompatActivity {
                     if(!valor.isEmpty()) {
                         double vlrProduto = Double.parseDouble(valor);
                         if(vlrProduto > 0) {
-                            Produto produto = new Produto(nome, qtd, vlrProduto);
+                            if(produto == null) {
+                                produto = new Produto();
+                            }
 
-                            produtoDAO.salvarProduto(produto);
+                            //Produto produto = new Produto(nome, qtd, vlrProduto);
+                            produto.setNome(nome);
+                            produto.setEstoque(qtd);
+                            produto.setValor(vlrProduto);
+
+                            if(produto.getId() != 0) {
+                                produtoDAO.atualizarProduto(produto);
+                            } else {
+                                produtoDAO.salvarProduto(produto);
+                            }
 
                             Toast.makeText(this, "Produto '" + nome + "' gravado com sucesso", Toast.LENGTH_SHORT).show();
 
@@ -67,6 +87,12 @@ public class FormProdutoActivity extends AppCompatActivity {
             edit_produto.requestFocus();
             edit_produto.setError("Informe o nome do produto");
         }
+    }
+
+    private void editarProduto() {
+        edit_produto.setText(produto.getNome());
+        edit_quantidade.setText(String.valueOf(produto.getEstoque()));
+        edit_valor.setText(String.valueOf(produto.getValor()));
     }
 
 }

@@ -85,6 +85,9 @@ public class MainActivity extends AppCompatActivity implements AdapterProduto.On
 
     @Override
     public void onClickListener(Produto produto) {
-        Toast.makeText(this, produto.getNome(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, FormProdutoActivity.class);
+        intent.putExtra("produto", produto);
+
+        startActivity(intent);
     }
 }

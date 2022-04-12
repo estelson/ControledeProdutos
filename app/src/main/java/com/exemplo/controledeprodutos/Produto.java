@@ -1,11 +1,16 @@
 package com.exemplo.controledeprodutos;
 
-public class Produto {
+import java.io.Serializable;
+
+public class Produto implements Serializable {
 
     private int id;
     private String nome;
     private int estoque;
     private double valor;
+
+    public Produto() {
+    }
 
     public Produto(String nome, int estoque, double valor) {
         this.nome = nome;
