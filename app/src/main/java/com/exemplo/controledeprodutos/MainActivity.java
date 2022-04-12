@@ -2,8 +2,10 @@ package com.exemplo.controledeprodutos;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,10 +20,13 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements AdapterProduto.OnClick {
 
     private AdapterProduto adapterProduto;
+    private List<Produto> produtoList = new ArrayList<>();
     private SwipeableRecyclerView rvProdutos;
 
     ImageButton ib_add;
     ImageButton ib_ver_mais;
+
+    TextView text_info;
 
     private ProdutoDAO produtoDAO;
 
@@ -32,9 +37,11 @@ public class MainActivity extends AppCompatActivity implements AdapterProduto.On
 
         produtoDAO = new ProdutoDAO(this);
 
+        produtoList = produtoDAO.getListProdutos();
+
         ib_add = findViewById(R.id.ib_add);
         ib_ver_mais = findViewById(R.id.ib_ver_mais);
-
+        text_info = findViewById(R.id.text_info);
         rvProdutos = findViewById(R.id.rvProdutos);
 
         configRecyclerView();
@@ -64,9 +71,14 @@ public class MainActivity extends AppCompatActivity implements AdapterProduto.On
     }
 
     private void configRecyclerView() {
+        produtoList.clear();
+        produtoList = produtoDAO.getListProdutos();
+
+        verificarQtdLista();
+
         rvProdutos.setLayoutManager(new LinearLayoutManager(this));
         rvProdutos.setHasFixedSize(true);
-        adapterProduto = new AdapterProduto(produtoDAO.getListProdutos(), this);
+        adapterProduto = new AdapterProduto(produtoList, this);
         rvProdutos.setAdapter(adapterProduto);
 
         rvProdutos.setListener(new SwipeLeftRightCallback.Listener() {
@@ -77,10 +89,29 @@ public class MainActivity extends AppCompatActivity implements AdapterProduto.On
 
             @Override
             public void onSwipedRight(int position) {
-                produtoDAO.getListProdutos().remove(position);
+                Produto produto = produtoList.get(position);
+                produtoDAO.excluirProduto(produto);
+                produtoList.remove(produto);
                 adapterProduto.notifyItemRemoved(position);
+
+                verificarQtdLista();
             }
         });
+    }
+
+    private void verificarQtdLista() {
+        if(produtoList.size() == 0) {
+            text_info.setVisibility(View.VISIBLE);
+        } else {
+            text_info.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        configRecyclerView();
     }
 
     @Override
