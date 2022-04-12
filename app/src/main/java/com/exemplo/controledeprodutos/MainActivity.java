@@ -1,5 +1,6 @@
 package com.exemplo.controledeprodutos;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements AdapterProduto.On
 
     private void ouvinteCliques() {
         ib_add.setOnClickListener(view -> {
-            Toast.makeText(this, "Add", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, FormProdutoActivity.class));
         });
 
         ib_ver_mais.setOnClickListener(view -> {
