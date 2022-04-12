@@ -1,4 +1,4 @@
-package com.exemplo.controledeprodutos.activity;
+package com.exemplo.controledeprodutos.autenticacao;
 
 import androidx.appcompat.app.AppCompatActivity;
 

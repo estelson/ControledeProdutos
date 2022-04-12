@@ -10,7 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ControleDeProdutos">
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".autenticacao.CriarContaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".autenticacao.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
