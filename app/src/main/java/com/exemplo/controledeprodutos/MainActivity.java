@@ -1,11 +1,12 @@
 package com.exemplo.controledeprodutos;
 
+import android.os.Bundle;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Bundle;
-import android.widget.Toast;
 
 import com.tsuryo.swipeablerv.SwipeLeftRightCallback;
 import com.tsuryo.swipeablerv.SwipeableRecyclerView;
@@ -19,16 +20,45 @@ public class MainActivity extends AppCompatActivity implements AdapterProduto.On
     private List<Produto> produtoList = new ArrayList<>();
     private SwipeableRecyclerView rvProdutos;
 
+    ImageButton ib_add;
+    ImageButton ib_ver_mais;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ib_add = findViewById(R.id.ib_add);
+        ib_ver_mais = findViewById(R.id.ib_ver_mais);
 
         rvProdutos = findViewById(R.id.rvProdutos);
 
         carregaLista();
 
         configRecyclerView();
+
+        ouvinteCliques();
+    }
+
+    private void ouvinteCliques() {
+        ib_add.setOnClickListener(view -> {
+            Toast.makeText(this, "Add", Toast.LENGTH_SHORT).show();
+        });
+
+        ib_ver_mais.setOnClickListener(view -> {
+            PopupMenu popupMenu = new PopupMenu(this, ib_ver_mais);
+            popupMenu.getMenuInflater().inflate(R.menu.menu_toolbar, popupMenu.getMenu());
+
+            popupMenu.setOnMenuItemClickListener(menuItem -> {
+                if(menuItem.getItemId() == R.id.menu_sobre) {
+                    Toast.makeText(this, "Sobre...", Toast.LENGTH_SHORT).show();
+                }
+
+                return true;
+            });
+
+            popupMenu.show();
+        });
     }
 
     private void configRecyclerView() {
