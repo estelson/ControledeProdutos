@@ -42,6 +42,11 @@ public class FormProdutoActivity extends AppCompatActivity {
                             Produto produto = new Produto(nome, qtd, vlrProduto);
 
                             produtoDAO.salvarProduto(produto);
+
+                            Toast.makeText(this, "Produto '" + nome + "' gravado com sucesso", Toast.LENGTH_SHORT).show();
+
+                            // Grava o registro e volta para a lista de produtos
+                            finish();
                         } else {
                             edit_valor.requestFocus();
                             edit_valor.setError("Informe um valor maior que 0");
