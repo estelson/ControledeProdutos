@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/ControledeProdutos/app/src/main/res/drawable/bg_btn.xml" value="0.229" />
+        <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/ControledeProdutos/app/src/main/res/drawable/bg_edit.xml" value="0.229" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/ControledeProdutos/app/src/main/res/drawable/ic_add.xml" value="0.229" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/ControledeProdutos/app/src/main/res/drawable/ic_sobre.xml" value="0.229" />
         <entry key="..\:/Documents/Projects/Android/Cursos/Udemy/ControledeProdutos/app/src/main/res/layout/activity_form_produto.xml" value="0.35833333333333334" />
