@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.exemplo.controledeprodutos.model.Produto;
+
 import java.util.ArrayList;
 import java.util.List;
 

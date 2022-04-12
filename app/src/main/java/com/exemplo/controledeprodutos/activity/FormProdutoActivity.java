@@ -1,4 +1,4 @@
-package com.exemplo.controledeprodutos;
+package com.exemplo.controledeprodutos.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.exemplo.controledeprodutos.model.Produto;
+import com.exemplo.controledeprodutos.ProdutoDAO;
+import com.exemplo.controledeprodutos.R;
 
 public class FormProdutoActivity extends AppCompatActivity {
 

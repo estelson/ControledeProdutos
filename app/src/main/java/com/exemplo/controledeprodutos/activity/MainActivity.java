@@ -1,4 +1,4 @@
-package com.exemplo.controledeprodutos;
+package com.exemplo.controledeprodutos.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.exemplo.controledeprodutos.adapter.AdapterProduto;
+import com.exemplo.controledeprodutos.model.Produto;
+import com.exemplo.controledeprodutos.ProdutoDAO;
+import com.exemplo.controledeprodutos.R;
 import com.tsuryo.swipeablerv.SwipeLeftRightCallback;
 import com.tsuryo.swipeablerv.SwipeableRecyclerView;
 
