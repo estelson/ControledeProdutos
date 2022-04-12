@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "618336178615",
+    "project_id": "ejl-controle-de-estoque",
+    "storage_bucket": "ejl-controle-de-estoque.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:618336178615:android:71ba85e2d24c3434555832",
+        "android_client_info": {
+          "package_name": "com.exemplo.controledeprodutos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "618336178615-1a6l2d7j8pp8ved09tr7c2j0btcudgii.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.exemplo.controledeprodutos",
+            "certificate_hash": "e097fdfde816c5c80d56001c6a5c0a8c300efbe9"
+          }
+        },
+        {
+          "client_id": "618336178615-7bmsg7n899to1oqeeonra4fs8meov8ng.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1HVgVKxmfykv6ddjS2Sw0CAMqSZK4kBQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "618336178615-7bmsg7n899to1oqeeonra4fs8meov8ng.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
