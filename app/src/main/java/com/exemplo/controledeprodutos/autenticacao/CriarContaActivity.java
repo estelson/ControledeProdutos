@@ -1,7 +1,9 @@
 package com.exemplo.controledeprodutos.autenticacao;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -10,6 +12,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.exemplo.controledeprodutos.R;
+import com.exemplo.controledeprodutos.activity.MainActivity;
+import com.exemplo.controledeprodutos.helper.FirebaseHelper;
+import com.exemplo.controledeprodutos.model.Usuario;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 
 public class CriarContaActivity extends AppCompatActivity {
 
@@ -47,7 +55,14 @@ public class CriarContaActivity extends AppCompatActivity {
         if(!nome.isEmpty()) {
             if(!email.isEmpty()) {
                 if(!senha.isEmpty()) {
-                    Toast.makeText(this, "Tudo certo!", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.VISIBLE);
+
+                    Usuario usuario = new Usuario();
+                    usuario.setNome(nome);
+                    usuario.setEmail(email);
+                    usuario.setSenha(senha);
+
+                    salvarCadastro(usuario);
                 } else {
                     edit_senha.requestFocus();
                     edit_senha.setError("Informe sua senha");
@@ -60,6 +75,21 @@ public class CriarContaActivity extends AppCompatActivity {
             edit_nome.requestFocus();
             edit_nome.setError("Informe seu nome");
         }
+    }
+
+    private void salvarCadastro(Usuario usuario) {
+        FirebaseHelper.getAuth().createUserWithEmailAndPassword(
+                usuario.getEmail(),
+                usuario.getSenha()
+        ).addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                String id = task.getResult().getUser().getUid();
+                usuario.setId(id);
+
+                finish();
+                startActivity(new Intent(this, MainActivity.class));
+            }
+        });
     }
 
     private void configCliques() {
