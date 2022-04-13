@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.exemplo.controledeprodutos.adapter.AdapterProduto;
+import com.exemplo.controledeprodutos.autenticacao.LoginActivity;
+import com.exemplo.controledeprodutos.helper.FirebaseHelper;
 import com.exemplo.controledeprodutos.model.Produto;
 import com.exemplo.controledeprodutos.ProdutoDAO;
 import com.exemplo.controledeprodutos.R;
@@ -65,6 +67,9 @@ public class MainActivity extends AppCompatActivity implements AdapterProduto.On
             popupMenu.setOnMenuItemClickListener(menuItem -> {
                 if(menuItem.getItemId() == R.id.menu_sobre) {
                     Toast.makeText(this, "Sobre...", Toast.LENGTH_SHORT).show();
+                } else if(menuItem.getItemId() == R.id.menu_sair) {
+                    FirebaseHelper.getAuth().signOut();
+                    startActivity(new Intent(this, LoginActivity.class));
                 }
 
                 return true;

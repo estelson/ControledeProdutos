@@ -6,9 +6,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.exemplo.controledeprodutos.R;
+import com.exemplo.controledeprodutos.activity.MainActivity;
+import com.exemplo.controledeprodutos.helper.FirebaseHelper;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -16,6 +20,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText edit_senha;
 
     private TextView text_criar_conta;
+
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +39,9 @@ public class LoginActivity extends AppCompatActivity {
 
         if(!email.isEmpty()) {
             if(!senha.isEmpty()) {
+                progressBar.setVisibility(View.VISIBLE);
 
+                validarLogin(email, senha);
             } else {
                 edit_senha.requestFocus();
                 edit_senha.setError("Informe sua senha");
@@ -49,11 +57,28 @@ public class LoginActivity extends AppCompatActivity {
         edit_senha = findViewById(R.id.edit_senha);
 
         text_criar_conta = findViewById(R.id.text_criar_conta);
+
+        progressBar = findViewById(R.id.progressBar);
     }
 
     private void configCliques() {
         text_criar_conta.setOnClickListener(view -> {
             startActivity(new Intent(this, CriarContaActivity.class));
+        });
+    }
+
+    private void validarLogin(String email, String senha) {
+        FirebaseHelper.getAuth().signInWithEmailAndPassword(email, senha).addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                finish();
+
+                startActivity(new Intent(this, MainActivity.class));
+            } else {
+                String error = task.getException().getMessage();
+                Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+
+                progressBar.setVisibility(View.GONE);
+            }
         });
     }
 
