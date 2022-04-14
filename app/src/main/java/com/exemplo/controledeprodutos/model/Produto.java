@@ -1,15 +1,21 @@
 package com.exemplo.controledeprodutos.model;
 
+import com.exemplo.controledeprodutos.helper.FirebaseHelper;
+import com.google.firebase.database.DatabaseReference;
+
 import java.io.Serializable;
 
 public class Produto implements Serializable {
 
-    private int id;
+    private String id;
     private String nome;
     private int estoque;
     private double valor;
 
+
     public Produto() {
+        DatabaseReference reference = FirebaseHelper.getDatabaseReference();
+        this.setId(reference.push().getKey()); // Gera um ID automático para o produto no Realtime Database e recupera ele
     }
 
     public Produto(String nome, int estoque, double valor) {
@@ -18,18 +24,27 @@ public class Produto implements Serializable {
         this.valor = valor;
     }
 
-    public Produto(int id, String nome, int estoque, double valor) {
+    public Produto(String id, String nome, int estoque, double valor) {
         this.id = id;
         this.nome = nome;
         this.estoque = estoque;
         this.valor = valor;
     }
 
-    public int getId() {
+    public void salvarProduto() {
+        DatabaseReference reference = FirebaseHelper.getDatabaseReference()
+                .child("produtos")
+                .child(FirebaseHelper.getUIDFirebase())
+                .child(this.id);
+
+        reference.setValue(this);
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

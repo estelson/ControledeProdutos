@@ -8,7 +8,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.exemplo.controledeprodutos.model.Produto;
-import com.exemplo.controledeprodutos.ProdutoDAO;
 import com.exemplo.controledeprodutos.R;
 
 public class FormProdutoActivity extends AppCompatActivity {
@@ -17,16 +16,12 @@ public class FormProdutoActivity extends AppCompatActivity {
     private EditText edit_quantidade;
     private EditText edit_valor;
 
-    private ProdutoDAO produtoDAO;
-
     private Produto produto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_produto);
-
-        produtoDAO = new ProdutoDAO(this);
 
         edit_produto = findViewById(R.id.edit_produto);
         edit_quantidade = findViewById(R.id.edit_quantidade);
@@ -61,11 +56,7 @@ public class FormProdutoActivity extends AppCompatActivity {
                             produto.setEstoque(qtd);
                             produto.setValor(vlrProduto);
 
-                            if(produto.getId() != 0) {
-                                produtoDAO.atualizarProduto(produto);
-                            } else {
-                                produtoDAO.salvarProduto(produto);
-                            }
+                            produto.salvarProduto();
 
                             Toast.makeText(this, "Produto '" + nome + "' gravado com sucesso", Toast.LENGTH_SHORT).show();
 

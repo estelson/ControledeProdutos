@@ -15,7 +15,6 @@ import com.exemplo.controledeprodutos.adapter.AdapterProduto;
 import com.exemplo.controledeprodutos.autenticacao.LoginActivity;
 import com.exemplo.controledeprodutos.helper.FirebaseHelper;
 import com.exemplo.controledeprodutos.model.Produto;
-import com.exemplo.controledeprodutos.ProdutoDAO;
 import com.exemplo.controledeprodutos.R;
 import com.tsuryo.swipeablerv.SwipeLeftRightCallback;
 import com.tsuryo.swipeablerv.SwipeableRecyclerView;
@@ -34,16 +33,10 @@ public class MainActivity extends AppCompatActivity implements AdapterProduto.On
 
     TextView text_info;
 
-    private ProdutoDAO produtoDAO;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        produtoDAO = new ProdutoDAO(this);
-
-        produtoList = produtoDAO.getListProdutos();
 
         ib_add = findViewById(R.id.ib_add);
         ib_ver_mais = findViewById(R.id.ib_ver_mais);
@@ -81,7 +74,6 @@ public class MainActivity extends AppCompatActivity implements AdapterProduto.On
 
     private void configRecyclerView() {
         produtoList.clear();
-        produtoList = produtoDAO.getListProdutos();
 
         verificarQtdLista();
 
@@ -99,7 +91,6 @@ public class MainActivity extends AppCompatActivity implements AdapterProduto.On
             @Override
             public void onSwipedRight(int position) {
                 Produto produto = produtoList.get(position);
-                produtoDAO.excluirProduto(produto);
                 produtoList.remove(produto);
                 adapterProduto.notifyItemRemoved(position);
 

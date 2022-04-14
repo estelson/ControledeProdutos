@@ -9,13 +9,16 @@ public class FirebaseHelper {
     private static FirebaseAuth auth;
     private static DatabaseReference databaseReference;
 
-
     public static FirebaseAuth getAuth() {
         if(auth == null) {
             auth = FirebaseAuth.getInstance();
         }
 
         return auth;
+    }
+
+    public static String getUIDFirebase() {
+        return getAuth().getUid();
     }
 
     public static boolean getAutenticado() {
