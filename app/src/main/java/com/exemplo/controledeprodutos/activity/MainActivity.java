@@ -26,6 +26,8 @@ import com.tsuryo.swipeablerv.SwipeLeftRightCallback;
 import com.tsuryo.swipeablerv.SwipeableRecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements AdapterProduto.OnClick {
@@ -116,6 +118,8 @@ public class MainActivity extends AppCompatActivity implements AdapterProduto.On
         produtosRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                produtoList.clear(); // Limpa a lista antes de carregar novamente a cada alteração de registros
+
                 for(DataSnapshot snap: snapshot.getChildren()) {
                     Produto produto = snap.getValue(Produto.class);
                     produtoList.add(produto);
@@ -123,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements AdapterProduto.On
 
                 verificarQtdLista();
 
+                Collections.reverse(produtoList);
                 adapterProduto.notifyDataSetChanged();
             }
 
