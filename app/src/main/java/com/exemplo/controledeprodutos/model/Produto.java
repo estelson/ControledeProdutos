@@ -40,6 +40,15 @@ public class Produto implements Serializable {
         reference.setValue(this);
     }
 
+    public void excluirProduto() {
+        DatabaseReference reference = FirebaseHelper.getDatabaseReference()
+                .child("produtos")
+                .child(FirebaseHelper.getUIDFirebase())
+                .child(this.id);
+
+        reference.removeValue();
+    }
+
     public String getId() {
         return id;
     }

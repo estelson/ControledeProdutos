@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements AdapterProduto.On
             public void onSwipedRight(int position) {
                 Produto produto = produtoList.get(position);
                 produtoList.remove(produto);
+                produto.excluirProduto();
                 adapterProduto.notifyItemRemoved(position);
 
                 verificarQtdLista();
