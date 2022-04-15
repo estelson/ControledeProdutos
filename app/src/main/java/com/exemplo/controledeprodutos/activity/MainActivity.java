@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -16,6 +18,10 @@ import com.exemplo.controledeprodutos.autenticacao.LoginActivity;
 import com.exemplo.controledeprodutos.helper.FirebaseHelper;
 import com.exemplo.controledeprodutos.model.Produto;
 import com.exemplo.controledeprodutos.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.tsuryo.swipeablerv.SwipeLeftRightCallback;
 import com.tsuryo.swipeablerv.SwipeableRecyclerView;
 
@@ -31,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements AdapterProduto.On
     ImageButton ib_add;
     ImageButton ib_ver_mais;
 
+    ProgressBar progressBar;
+
     TextView text_info;
 
     @Override
@@ -38,14 +46,19 @@ public class MainActivity extends AppCompatActivity implements AdapterProduto.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        iniciarComponentes();
+
+        ouvinteCliques();
+
+        configRecyclerView();
+    }
+
+    private void iniciarComponentes() {
         ib_add = findViewById(R.id.ib_add);
         ib_ver_mais = findViewById(R.id.ib_ver_mais);
         text_info = findViewById(R.id.text_info);
         rvProdutos = findViewById(R.id.rvProdutos);
-
-        configRecyclerView();
-
-        ouvinteCliques();
+        progressBar = findViewById(R.id.progressBar);
     }
 
     private void ouvinteCliques() {
@@ -73,10 +86,6 @@ public class MainActivity extends AppCompatActivity implements AdapterProduto.On
     }
 
     private void configRecyclerView() {
-        produtoList.clear();
-
-        verificarQtdLista();
-
         rvProdutos.setLayoutManager(new LinearLayoutManager(this));
         rvProdutos.setHasFixedSize(true);
         adapterProduto = new AdapterProduto(produtoList, this);
@@ -99,11 +108,38 @@ public class MainActivity extends AppCompatActivity implements AdapterProduto.On
         });
     }
 
+    private void recuperarProdutos() {
+        DatabaseReference produtosRef = FirebaseHelper.getDatabaseReference()
+                .child("produtos")
+                .child(FirebaseHelper.getUIDFirebase());
+
+        produtosRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot snap: snapshot.getChildren()) {
+                    Produto produto = snap.getValue(Produto.class);
+                    produtoList.add(produto);
+                }
+
+                verificarQtdLista();
+
+                adapterProduto.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     private void verificarQtdLista() {
         if(produtoList.size() == 0) {
+            text_info.setText("Nenum produto encontrado");
             text_info.setVisibility(View.VISIBLE);
         } else {
             text_info.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
         }
     }
 
@@ -111,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements AdapterProduto.On
     protected void onStart() {
         super.onStart();
 
-        configRecyclerView();
+        recuperarProdutos();
     }
 
     @Override
