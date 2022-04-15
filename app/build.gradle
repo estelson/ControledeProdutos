@@ -47,4 +47,11 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth'
     // Declare the dependency for the Realtime Database library
     implementation 'com.google.firebase:firebase-database'
+    // Declare the dependency for the Cloud Storage library
+    implementation 'com.google.firebase:firebase-storage'
+
+    // https://github.com/ParkSangGwon/TedPermission  -  Possibilidade   de  adicionar  controle  de
+    // permissões personalizadas ao app
+    implementation 'io.github.ParkSangGwon:tedpermission-normal:3.3.0' // 2.2.3
+
 }
