@@ -1,11 +1,17 @@
 package com.exemplo.controledeprodutos.activity;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,6 +22,7 @@ import com.exemplo.controledeprodutos.R;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.normal.TedPermission;
 
+import java.io.IOException;
 import java.util.List;
 
 public class FormProdutoActivity extends AppCompatActivity {
@@ -26,6 +33,9 @@ public class FormProdutoActivity extends AppCompatActivity {
     private EditText edit_produto;
     private EditText edit_quantidade;
     private EditText edit_valor;
+
+    private String caminhoImagem;
+    private Bitmap imagem;
 
     private Produto produto;
 
@@ -44,20 +54,40 @@ public class FormProdutoActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == RESULT_OK) {
+            if(requestCode == REQUEST_GALERIA) {
+                Uri localImagemSelecionada = data.getData();
+                caminhoImagem = localImagemSelecionada.toString();
+
+                if(Build.VERSION.SDK_INT < 28) {
+                    try {
+                        imagem = MediaStore.Images.Media.getBitmap(getBaseContext().getContentResolver(), localImagemSelecionada);
+                    } catch (IOException e) {
+                        Toast.makeText(this, "Erro ao carregar imagem. Motivo:  " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    ImageDecoder.Source source = ImageDecoder.createSource(getBaseContext().getContentResolver(), localImagemSelecionada);
+                    try {
+                        imagem = ImageDecoder.decodeBitmap(source);
+                    } catch (IOException e) {
+                        Toast.makeText(this, "Erro ao carregar imagem. Motivo:  " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                Log.i("INFOTESTE", "onActivityResult: " + caminhoImagem);
+            }
+        }
+    }
+
     private void iniciarComponentes() {
         edit_produto = findViewById(R.id.edit_produto);
         edit_quantidade = findViewById(R.id.edit_quantidade);
         edit_valor = findViewById(R.id.edit_valor);
         imagem_produto = findViewById(R.id.imagem_produto);
-    }
-
-    public void abrirGaleria(View view) {
-        verificarPermissaoGaleria();
-    }
-
-    private void abrirGaleria() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, REQUEST_GALERIA);
     }
 
     private void showDialogPermissao(PermissionListener listener, String[] permissoes) {
@@ -71,7 +101,7 @@ public class FormProdutoActivity extends AppCompatActivity {
                 .check();
     }
 
-    private void verificarPermissaoGaleria() {
+    public void verificarPermissaoGaleria(View view) {
         PermissionListener permissionListener = new PermissionListener() {
             @Override
             public void onPermissionGranted() {
@@ -87,6 +117,11 @@ public class FormProdutoActivity extends AppCompatActivity {
         showDialogPermissao(permissionListener, new String[] {
             Manifest.permission.READ_EXTERNAL_STORAGE
         });
+    }
+
+    private void abrirGaleria() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, REQUEST_GALERIA);
     }
 
     public void salvarProduto(View view) {
