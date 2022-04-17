@@ -54,4 +54,7 @@ dependencies {
     // permissões personalizadas ao app
     implementation 'io.github.ParkSangGwon:tedpermission-normal:3.3.0' // 2.2.3
 
+    // Image downloading and caching library for Android
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
 }

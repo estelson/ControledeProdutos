@@ -124,9 +124,6 @@ public class MainActivity extends AppCompatActivity implements AdapterProduto.On
 
                 for(DataSnapshot snap: snapshot.getChildren()) {
                     Produto produto = snap.getValue(Produto.class);
-
-                    Log.i("INFOTESTE", "onDataChange: " + produto.getUrlImagem());
-
                     produtoList.add(produto);
                 }
 
@@ -145,12 +142,13 @@ public class MainActivity extends AppCompatActivity implements AdapterProduto.On
 
     private void verificarQtdLista() {
         if(produtoList.size() == 0) {
-            text_info.setText("Nenum produto encontrado");
+            text_info.setText("Nenhum produto encontrado");
             text_info.setVisibility(View.VISIBLE);
         } else {
             text_info.setVisibility(View.GONE);
-            progressBar.setVisibility(View.GONE);
         }
+        
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override

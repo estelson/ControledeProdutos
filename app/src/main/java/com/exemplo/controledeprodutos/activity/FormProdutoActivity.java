@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,6 +23,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.normal.TedPermission;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.List;
@@ -202,6 +202,8 @@ public class FormProdutoActivity extends AppCompatActivity {
         edit_produto.setText(produto.getNome());
         edit_quantidade.setText(String.valueOf(produto.getEstoque()));
         edit_valor.setText(String.valueOf(produto.getValor()));
+
+        Picasso.get().load(produto.getUrlImagem()).into(imagem_produto);
     }
 
 }
