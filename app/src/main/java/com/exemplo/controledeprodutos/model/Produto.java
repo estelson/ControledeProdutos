@@ -2,6 +2,7 @@ package com.exemplo.controledeprodutos.model;
 
 import com.exemplo.controledeprodutos.helper.FirebaseHelper;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.Serializable;
 
@@ -48,6 +49,14 @@ public class Produto implements Serializable {
                 .child(this.id);
 
         reference.removeValue();
+
+        StorageReference storageReference = FirebaseHelper.getStorageReference()
+                .child("imagens")
+                .child("produtos")
+                .child(FirebaseHelper.getUIDFirebase())
+                .child(this.id + ".jpeg");
+
+        storageReference.delete();
     }
 
     public String getId() {
