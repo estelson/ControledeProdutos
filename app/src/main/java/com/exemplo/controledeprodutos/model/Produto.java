@@ -11,6 +11,7 @@ public class Produto implements Serializable {
     private String nome;
     private int estoque;
     private double valor;
+    private String urlImagem;
 
 
     public Produto() {
@@ -81,4 +82,11 @@ public class Produto implements Serializable {
         this.valor = valor;
     }
 
+    public String getUrlImagem() {
+        return urlImagem;
+    }
+
+    public void setUrlImagem(String urlImagem) {
+        this.urlImagem = urlImagem;
+    }
 }

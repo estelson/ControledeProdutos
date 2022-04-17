@@ -17,8 +17,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.exemplo.controledeprodutos.helper.FirebaseHelper;
 import com.exemplo.controledeprodutos.model.Produto;
 import com.exemplo.controledeprodutos.R;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.normal.TedPermission;
 
@@ -78,7 +81,7 @@ public class FormProdutoActivity extends AppCompatActivity {
                     }
                 }
 
-                Log.i("INFOTESTE", "onActivityResult: " + caminhoImagem);
+                imagem_produto.setImageBitmap(imagem);
             }
         }
     }
@@ -145,7 +148,11 @@ public class FormProdutoActivity extends AppCompatActivity {
                             produto.setEstoque(qtd);
                             produto.setValor(vlrProduto);
 
-                            produto.salvarProduto();
+                            if(caminhoImagem == null) {
+                                Toast.makeText(this, "Selecione uma imagem", Toast.LENGTH_SHORT).show();
+                            } else {
+                                salvarImagemProduto();
+                            }
 
                             Toast.makeText(this, "Produto '" + nome + "' gravado com sucesso", Toast.LENGTH_SHORT).show();
 
@@ -171,6 +178,24 @@ public class FormProdutoActivity extends AppCompatActivity {
             edit_produto.requestFocus();
             edit_produto.setError("Informe o nome do produto");
         }
+    }
+
+    private void salvarImagemProduto() {
+        StorageReference reference = FirebaseHelper.getStorageReference()
+                .child("imagens")
+                .child("produtos")
+                .child(FirebaseHelper.getUIDFirebase())
+                .child(produto.getId() + ".jpeg");
+
+        UploadTask uploadTask = reference.putFile(Uri.parse(caminhoImagem));
+        uploadTask.addOnSuccessListener(taskSnapshot -> reference.getDownloadUrl().addOnCompleteListener(task -> {
+            produto.setUrlImagem(task.getResult().toString());
+            produto.salvarProduto();
+
+            finish();
+        })).addOnFailureListener(e -> {
+            Toast.makeText(this, "Erro ao salvar imagem. Motivo: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        });
     }
 
     private void editarProduto() {
