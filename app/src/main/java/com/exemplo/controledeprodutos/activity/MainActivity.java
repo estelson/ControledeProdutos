@@ -2,6 +2,7 @@ package com.exemplo.controledeprodutos.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
@@ -116,13 +117,16 @@ public class MainActivity extends AppCompatActivity implements AdapterProduto.On
                 .child("produtos")
                 .child(FirebaseHelper.getUIDFirebase());
 
-        produtosRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        produtosRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 produtoList.clear(); // Limpa a lista antes de carregar novamente a cada alteração de registros
 
                 for(DataSnapshot snap: snapshot.getChildren()) {
                     Produto produto = snap.getValue(Produto.class);
+
+                    Log.i("INFOTESTE", "onDataChange: " + produto.getUrlImagem());
+
                     produtoList.add(produto);
                 }
 
